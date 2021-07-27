@@ -8,7 +8,4 @@ description = "A simple minesweeper game using Rust and windows-rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-windows = "0.18.0"
-
-[build-dependencies]
-windows = "0.18.0"
+bindings = { path = "bindings" }

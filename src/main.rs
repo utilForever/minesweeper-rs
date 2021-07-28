@@ -4,7 +4,7 @@ use winit::{
     window::WindowBuilder,
 };
 
-fn main() {
+fn run() -> windows::Result<()> {
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
     window.set_title("Minesweeper");
@@ -20,4 +20,13 @@ fn main() {
             _ => (),
         }
     });
+}
+
+fn main() {
+    let result = run();
+
+    // We do this for nicer HRESULT printing when errors occur.
+    if let Err(error) = result {
+        error.code().unwrap();
+    }
 }

@@ -66,6 +66,7 @@ fn run() -> windows::Result<()> {
     // Create grid.
     let window_size = window.inner_size();
     let empty_grid = Grid::new(&container_visual, window_size.width, window_size.height)?;
+    empty_grid.draw()?;
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

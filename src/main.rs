@@ -6,9 +6,14 @@ use winit::{
 
 use bindings::Windows::{
     System::DispatcherQueueController,
+    UI::Composition::Compositor,
+    Win32::Foundation::HWND,
     Win32::System::Com::{CoInitializeEx, COINIT_APARTMENTTHREADED},
-    Win32::System::WinRT::{CreateDispatcherQueueController, DispatcherQueueOptions, DQTYPE_THREAD_CURRENT, DQTAT_COM_NONE},
+    Win32::System::WinRT::{CreateDispatcherQueueController, DispatcherQueueOptions, ICompositorDesktopInterop, DQTYPE_THREAD_CURRENT, DQTAT_COM_NONE},
 };
+
+use windows::Interface;
+use raw_window_handle::HasRawWindowHandle;
 
 fn create_dispatcher() -> DispatcherQueueController {
     // We need a DispatcherQueue on our thread to properly create a Compositor. Note that since
@@ -30,6 +35,23 @@ fn run() -> windows::Result<()> {
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
     window.set_title("Minesweeper");
+
+    // Create desktop window target.
+    let compositor = Compositor::new()?;
+    let window_handle = window.raw_window_handle();
+    let window_handle = match window_handle {
+        raw_window_handle::RawWindowHandle::Windows(window_handle) => {
+            window_handle.hwnd
+        }
+        _ => panic!("Unsupported platform!"),
+    };    
+
+    let compositor_desktop: ICompositorDesktopInterop = compositor.cast()?;
+
+    let target = unsafe {
+        compositor_desktop
+            .CreateDesktopWindowTarget(HWND(window_handle as isize), false)?
+    };
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

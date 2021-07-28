@@ -5,6 +5,7 @@ use winit::{
 };
 
 use bindings::Windows::{
+    Foundation::Numerics::Vector2,
     System::DispatcherQueueController,
     UI::Composition::Compositor,
     Win32::Foundation::HWND,
@@ -52,6 +53,11 @@ fn run() -> windows::Result<()> {
         compositor_desktop
             .CreateDesktopWindowTarget(HWND(window_handle as isize), false)?
     };
+
+    // Create composition root.
+    let container_visual = compositor.CreateContainerVisual()?;
+    container_visual.SetRelativeSizeAdjustment(Vector2 { X: 1.0, Y: 1.0 })?;
+    target.SetRoot(&container_visual)?;
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

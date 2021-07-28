@@ -11,14 +11,17 @@ use winit::{
 use bindings::Windows::{
     Foundation::Numerics::Vector2,
     System::DispatcherQueueController,
-    UI::Composition::Compositor,
     Win32::Foundation::HWND,
     Win32::System::Com::{CoInitializeEx, COINIT_APARTMENTTHREADED},
-    Win32::System::WinRT::{CreateDispatcherQueueController, DispatcherQueueOptions, ICompositorDesktopInterop, DQTYPE_THREAD_CURRENT, DQTAT_COM_NONE},
+    Win32::System::WinRT::{
+        CreateDispatcherQueueController, DispatcherQueueOptions, ICompositorDesktopInterop,
+        DQTAT_COM_NONE, DQTYPE_THREAD_CURRENT,
+    },
+    UI::Composition::Compositor,
 };
 
-use windows::Interface;
 use raw_window_handle::HasRawWindowHandle;
+use windows::Interface;
 
 fn create_dispatcher() -> DispatcherQueueController {
     // We need a DispatcherQueue on our thread to properly create a Compositor. Note that since
@@ -45,17 +48,14 @@ fn run() -> windows::Result<()> {
     let compositor = Compositor::new()?;
     let window_handle = window.raw_window_handle();
     let window_handle = match window_handle {
-        raw_window_handle::RawWindowHandle::Windows(window_handle) => {
-            window_handle.hwnd
-        }
+        raw_window_handle::RawWindowHandle::Windows(window_handle) => window_handle.hwnd,
         _ => panic!("Unsupported platform!"),
-    };    
+    };
 
     let compositor_desktop: ICompositorDesktopInterop = compositor.cast()?;
 
     let target = unsafe {
-        compositor_desktop
-            .CreateDesktopWindowTarget(HWND(window_handle as isize), false)?
+        compositor_desktop.CreateDesktopWindowTarget(HWND(window_handle as isize), false)?
     };
 
     // Create composition root.

@@ -1,7 +1,7 @@
 use bindings::Windows::{
     Foundation::Numerics::{Vector2, Vector3},
     UI::Colors,
-    UI::Composition::{Compositor, ContainerVisual}
+    UI::Composition::{Compositor, ContainerVisual},
 };
 
 pub struct Grid {
@@ -34,7 +34,10 @@ impl Grid {
                 visual.SetSize(Vector2::new(25.0, 25.0))?;
                 visual.SetBrush(&color_brush)?;
                 visual.SetCenterPoint(Vector3::new(12.5, 12.5, 0.0))?;
-                visual.SetOffset(Vector3::new(1.25, 1.25, 0.0) + (Vector3::new(27.5, 27.5, 27.5) * Vector3::new(x as f32, y as f32, 0.0)))?;
+                visual.SetOffset(
+                    Vector3::new(1.25, 1.25, 0.0)
+                        + (Vector3::new(27.5, 27.5, 27.5) * Vector3::new(x as f32, y as f32, 0.0)),
+                )?;
                 self.container_visual.Children()?.InsertAtTop(&visual)?;
             }
         }

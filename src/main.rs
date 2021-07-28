@@ -1,3 +1,7 @@
+mod grid;
+
+use grid::Grid;
+
 use winit::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
@@ -58,6 +62,10 @@ fn run() -> windows::Result<()> {
     let container_visual = compositor.CreateContainerVisual()?;
     container_visual.SetRelativeSizeAdjustment(Vector2 { X: 1.0, Y: 1.0 })?;
     target.SetRoot(&container_visual)?;
+
+    // Create grid.
+    let window_size = window.inner_size();
+    let empty_grid = Grid::new(&container_visual, window_size.width, window_size.height)?;
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

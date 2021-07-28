@@ -4,7 +4,29 @@ use winit::{
     window::WindowBuilder,
 };
 
+use bindings::Windows::{
+    System::DispatcherQueueController,
+    Win32::System::Com::{CoInitializeEx, COINIT_APARTMENTTHREADED},
+    Win32::System::WinRT::{CreateDispatcherQueueController, DispatcherQueueOptions, DQTYPE_THREAD_CURRENT, DQTAT_COM_NONE},
+};
+
+fn create_dispatcher() -> DispatcherQueueController {
+    // We need a DispatcherQueue on our thread to properly create a Compositor. Note that since
+    // we aren't pumping messages, the Compositor won't commit. This is fine for the test for now.
+
+    let options = DispatcherQueueOptions {
+        dwSize: std::mem::size_of::<DispatcherQueueOptions>() as u32,
+        threadType: DQTYPE_THREAD_CURRENT,
+        apartmentType: DQTAT_COM_NONE,
+    };
+
+    unsafe { CreateDispatcherQueueController(options).unwrap() }
+}
+
 fn run() -> windows::Result<()> {
+    unsafe { CoInitializeEx(std::ptr::null_mut(), COINIT_APARTMENTTHREADED)? };
+    let _dispatcher = create_dispatcher();
+
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
     window.set_title("Minesweeper");

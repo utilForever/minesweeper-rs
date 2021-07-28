@@ -9,3 +9,4 @@ description = "A simple minesweeper game using Rust and windows-rs"
 
 [dependencies]
 bindings = { path = "bindings" }
+winit = "0.25.0"

@@ -26,16 +26,18 @@ impl Grid {
     }
 
     pub fn draw(&self) -> windows::Result<()> {
-        let visual = self.compositor.CreateSpriteVisual()?;
+        let color_brush = self.compositor.CreateColorBrushWithColor(Colors::Red()?)?;
 
-        visual.SetSize(Vector2 { X: 30.0, Y: 30.0 })?;
-        visual.SetBrush(self.compositor.CreateColorBrushWithColor(Colors::Red()?)?)?;
-        visual.SetOffset(Vector3 {
-            X: self.width as f32 / 2.0,
-            Y: self.height as f32 / 2.0,
-            Z: 0.0,
-        })?;
-        self.container_visual.Children()?.InsertAtTop(&visual)?;
+        for x in 0..8 {
+            for y in 0..8 {
+                let visual = self.compositor.CreateSpriteVisual()?;
+                visual.SetSize(Vector2::new(25.0, 25.0))?;
+                visual.SetBrush(&color_brush)?;
+                visual.SetCenterPoint(Vector3::new(12.5, 12.5, 0.0))?;
+                visual.SetOffset(Vector3::new(1.25, 1.25, 0.0) + (Vector3::new(27.5, 27.5, 27.5) * Vector3::new(x as f32, y as f32, 0.0)))?;
+                self.container_visual.Children()?.InsertAtTop(&visual)?;
+            }
+        }
 
         Ok(())
     }

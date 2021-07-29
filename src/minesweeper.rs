@@ -18,7 +18,7 @@ pub struct Minesweeper {
 }
 
 impl Minesweeper {
-    pub fn new(width: u32, height: u32, num_mines: i32) {
+    pub fn new(width: u32, height: u32, num_mines: i32) -> Self {
         let board_size = (width * height) as usize;
 
         let mut result = Self {
@@ -31,6 +31,8 @@ impl Minesweeper {
         };
 
         result.start();
+
+        result
     }
 
     fn start(&mut self) {

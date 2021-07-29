@@ -63,6 +63,15 @@ impl Minesweeper {
         }
     }
 
+    fn is_mine(&self, x: i32, y: i32) -> bool {
+        if x < 0 || x >= self.width as i32 || y < 0 || y >= self.height as i32 {
+            false
+        } else {
+            let idx = (y as u32 * self.height + x as u32) as usize;
+            self.mines[idx]
+        }
+    }
+
     pub fn show(&self) {
         for y in 0..self.height {
             for x in 0..self.width {

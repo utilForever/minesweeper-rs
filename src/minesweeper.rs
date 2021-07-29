@@ -120,4 +120,21 @@ impl Minesweeper {
             println!();
         }
     }
+
+    pub fn show_with_mine_count(&self) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let idx = (y * self.height + x) as usize;
+                print!(
+                    "{}",
+                    if self.mines[idx] {
+                        "*".to_string()
+                    } else {
+                        self.get_count_neighbor_mines(x, y).to_string()
+                    }
+                );
+            }
+            println!();
+        }
+    }
 }

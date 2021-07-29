@@ -72,7 +72,6 @@ fn run() -> windows::Result<()> {
         Height: 15,
     };
     let game = Minesweeper::new(
-        &container_visual,
         game_board_size.Width as u32,
         game_board_size.Height as u32,
     )?;

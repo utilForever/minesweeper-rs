@@ -72,6 +72,45 @@ impl Minesweeper {
         }
     }
 
+    fn get_count_neighbor_mines(&self, x: u32, y: u32) -> u32 {
+        let mut count: u32 = 0;
+
+        // North West
+        if self.is_mine(x as i32 - 1, y as i32 - 1) {
+            count += 1;
+        }
+        // North
+        if self.is_mine(x as i32, y as i32 - 1) {
+            count += 1;
+        }
+        // North East
+        if self.is_mine(x as i32 + 1, y as i32 - 1) {
+            count += 1;
+        }
+        // East
+        if self.is_mine(x as i32 + 1, y as i32) {
+            count += 1;
+        }
+        // South East
+        if self.is_mine(x as i32 + 1, y as i32 + 1) {
+            count += 1;
+        }
+        // South
+        if self.is_mine(x as i32, y as i32 + 1) {
+            count += 1;
+        }
+        // South West
+        if self.is_mine(x as i32 - 1, y as i32 + 1) {
+            count += 1;
+        }
+        // West
+        if self.is_mine(x as i32 - 1, y as i32) {
+            count += 1;
+        }
+
+        count
+    }
+
     pub fn show(&self) {
         for y in 0..self.height {
             for x in 0..self.width {

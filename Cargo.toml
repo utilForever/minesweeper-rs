@@ -12,3 +12,4 @@ windows = "0.18.0"
 bindings = { path = "bindings" }
 winit = "0.25.0"
 raw-window-handle = "0.3.3"
+rand = "0.8.4"

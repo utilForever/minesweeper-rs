@@ -68,15 +68,15 @@ fn run() -> windows::Result<()> {
     // Create grid.
     let window_size = window.inner_size();
     let game_board_size = SizeInt32 {
-        Width: 20,
-        Height: 15,
+        Width: 30,
+        Height: 16,
     };
     let game = Minesweeper::new(
         game_board_size.Width as u32,
         game_board_size.Height as u32,
-        40,
+        99,
     );
-    game.show();
+    game.show_with_mine_count();
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

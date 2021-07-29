@@ -9,6 +9,9 @@ pub enum MineState {
 }
 
 pub struct Minesweeper {
+    width: u32,
+    height: u32,
+
     mines: Vec<bool>,
     num_mines: i32,
     mine_states: Vec<MineState>,
@@ -19,6 +22,9 @@ impl Minesweeper {
         let board_size = (width * height) as usize;
 
         let mut result = Self {
+            width: width,
+            height: height,
+
             mines: vec![false; board_size],
             num_mines: num_mines,
             mine_states: vec![MineState::Empty; board_size],
@@ -45,13 +51,23 @@ impl Minesweeper {
 
         for _i in 0..self.num_mines {
             let mut idx: usize;
-            
+
             while {
                 idx = rng.sample(side);
                 self.mines[idx]
             } {}
 
             self.mines[idx] = true;
+        }
+    }
+
+    pub fn show(&self) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let idx = (y * self.height + x) as usize;
+                print!("{}", if self.mines[idx] { "*" } else { "." });
+            }
+            println!();
         }
     }
 }

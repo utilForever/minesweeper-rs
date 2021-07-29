@@ -1,3 +1,5 @@
+use rand::Rng;
+
 #[derive(Clone)]
 pub enum MineState {
     Empty,
@@ -28,6 +30,28 @@ impl Minesweeper {
     fn start(&mut self) {
         for mine_state in self.mine_states.iter_mut() {
             *mine_state = MineState::Empty
+        }
+
+        self.generate_mines();
+    }
+
+    fn generate_mines(&mut self) {
+        for mine in self.mines.iter_mut() {
+            *mine = false
+        }
+
+        let mut rng = rand::thread_rng();
+        let side = rand::distributions::Uniform::new(0, self.mines.len());
+
+        for _i in 0..self.num_mines {
+            let mut idx: usize;
+            
+            while {
+                idx = rng.sample(side);
+                self.mines[idx]
+            } {}
+
+            self.mines[idx] = true;
         }
     }
 }

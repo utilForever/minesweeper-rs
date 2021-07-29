@@ -13,7 +13,7 @@ pub struct Minesweeper {
 }
 
 impl Minesweeper {
-    pub fn new(width: u32, height: u32, num_mines: i32) -> windows::Result<Self> {
+    pub fn new(width: u32, height: u32, num_mines: i32) {
         let board_size = (width * height) as usize;
 
         let mut result = Self {
@@ -22,16 +22,12 @@ impl Minesweeper {
             mine_states: vec![MineState::Empty; board_size],
         };
 
-        result.start()?;
-
-        Ok(result)
+        result.start();
     }
 
-    fn start(&mut self) -> windows::Result<()> {
+    fn start(&mut self) {
         for mine_state in self.mine_states.iter_mut() {
             *mine_state = MineState::Empty
         }
-
-        Ok(())
     }
 }

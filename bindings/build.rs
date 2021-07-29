@@ -1,5 +1,6 @@
 fn main() {
     windows::build! {
+        Windows::Graphics::SizeInt32,
         Windows::System::DispatcherQueueController,
         Windows::UI::Colors,
         Windows::UI::Composition::{Compositor, ContainerVisual, SpriteVisual, VisualCollection, CompositionColorBrush},

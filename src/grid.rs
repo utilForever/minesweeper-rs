@@ -31,7 +31,6 @@ impl Grid {
 
     pub fn draw(&self) -> windows::Result<()> {
         let children = self.root.Children()?;
-        let color_brush = self.compositor.CreateColorBrushWithColor(Colors::Red()?)?;
 
         self.root.SetSize(
             (&self.tile_size + Vector2::new(2.5, 2.5)) * Vector2::new(16.0 as f32, 16.0 as f32),
@@ -41,7 +40,6 @@ impl Grid {
             for y in 0..8 {
                 let visual = self.compositor.CreateSpriteVisual()?;
                 visual.SetSize(&self.tile_size)?;
-                visual.SetBrush(&color_brush)?;
                 visual.SetCenterPoint(Vector3::new(
                     self.tile_size.X / 2.0,
                     self.tile_size.Y / 2.0,
@@ -55,6 +53,7 @@ impl Grid {
                             0.0,
                         ) * Vector3::new(x as f32, y as f32, 0.0)),
                 )?;
+
                 children.InsertAtTop(&visual)?;
             }
         }

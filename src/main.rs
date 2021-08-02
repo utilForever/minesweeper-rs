@@ -1,6 +1,8 @@
 mod grid;
+mod gui;
 mod minesweeper;
 
+use gui::GUI;
 use minesweeper::Minesweeper;
 
 use winit::{
@@ -66,17 +68,21 @@ fn run() -> windows::Result<()> {
     target.SetRoot(&container_visual)?;
 
     // Create grid.
-    let window_size = window.inner_size();
+    let window_size = Vector2::new(
+        window.inner_size().width as f32,
+        window.inner_size().height as f32,
+    );
     let game_board_size = SizeInt32 {
         Width: 30,
         Height: 16,
     };
-    let game = Minesweeper::new(
+    let _game = Minesweeper::new(
         game_board_size.Width as u32,
         game_board_size.Height as u32,
         99,
     );
-    game.show_with_mine_count();
+    let gui = GUI::new(&container_visual, &window_size)?;
+    gui.draw_grid()?;
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

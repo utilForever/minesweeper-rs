@@ -60,4 +60,8 @@ impl Grid {
 
         Ok(())
     }
+
+    pub fn root(&self) -> &ContainerVisual {
+        &self.root
+    }
 }

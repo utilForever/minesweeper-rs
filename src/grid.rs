@@ -7,21 +7,15 @@ use bindings::Windows::{
 pub struct Grid {
     container_visual: ContainerVisual,
     compositor: Compositor,
-    width: u32,
-    height: u32,
+    tile_size: Vector2,
 }
 
 impl Grid {
-    pub fn new(
-        container_visual: &ContainerVisual,
-        width: u32,
-        height: u32,
-    ) -> windows::Result<Self> {
+    pub fn new(container_visual: &ContainerVisual, tile_size: Vector2) -> windows::Result<Self> {
         Ok(Self {
             container_visual: container_visual.clone(),
             compositor: container_visual.Compositor()?.clone(),
-            width,
-            height,
+            tile_size: tile_size,
         })
     }
 

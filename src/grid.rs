@@ -15,8 +15,8 @@ pub struct Grid {
 impl Grid {
     pub fn new(
         compositor: &Compositor,
-        tile_size: Vector2,
-        margin: Vector2,
+        tile_size: &Vector2,
+        margin: &Vector2,
     ) -> windows::Result<Self> {
         let compositor = compositor.clone();
         let root = compositor.CreateContainerVisual()?;

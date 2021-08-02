@@ -40,4 +40,10 @@ impl GUI {
 
         Ok(result)
     }
+
+    pub fn draw_grid(&self) -> windows::Result<()> {
+        self.game_board.draw()?;
+
+        Ok(())
+    }
 }

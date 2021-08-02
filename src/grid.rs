@@ -71,4 +71,8 @@ impl Grid {
     pub fn root(&self) -> &ContainerVisual {
         &self.root
     }
+
+    pub fn tiles_iter(&self) -> impl std::iter::Iterator<Item = &SpriteVisual> {
+        self.tiles.iter()
+    }
 }

@@ -6,6 +6,7 @@ use bindings::Windows::{
     UI::Composition::{CompositionBorderMode, Compositor, ContainerVisual},
 };
 
+#[derive(Clone)]
 pub struct GUI {
     compositor: Compositor,
     window_size: Vector2,

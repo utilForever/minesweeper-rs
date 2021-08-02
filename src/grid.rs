@@ -4,6 +4,7 @@ use bindings::Windows::{
     UI::Composition::{Compositor, ContainerVisual},
 };
 
+#[derive(Clone)]
 pub struct Grid {
     compositor: Compositor,
     root: ContainerVisual,

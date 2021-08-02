@@ -1,13 +1,14 @@
 use bindings::Windows::{
     Foundation::Numerics::{Vector2, Vector3},
     UI::Colors,
-    UI::Composition::{Compositor, ContainerVisual},
+    UI::Composition::{Compositor, ContainerVisual, SpriteVisual},
 };
 
 #[derive(Clone)]
 pub struct Grid {
     compositor: Compositor,
     root: ContainerVisual,
+    tiles: Vec<SpriteVisual>,
 
     tile_size: Vector2,
     margin: Vector2,
@@ -25,13 +26,17 @@ impl Grid {
         Ok(Self {
             compositor: compositor,
             root: root,
+            tiles: Vec::new(),
+
             tile_size: tile_size.clone(),
             margin: margin.clone(),
         })
     }
 
-    pub fn draw(&self) -> windows::Result<()> {
+    pub fn draw(&mut self) -> windows::Result<()> {
         let children = self.root.Children()?;
+        children.RemoveAll()?;
+        self.tiles.clear();
 
         self.root.SetSize(
             (&self.tile_size + Vector2::new(2.5, 2.5)) * Vector2::new(16.0 as f32, 16.0 as f32),
@@ -56,6 +61,7 @@ impl Grid {
                 )?;
 
                 children.InsertAtTop(&visual)?;
+                self.tiles.push(visual);
             }
         }
 

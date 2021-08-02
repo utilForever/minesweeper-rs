@@ -5,22 +5,31 @@ use bindings::Windows::{
 };
 
 pub struct Grid {
-    container_visual: ContainerVisual,
     compositor: Compositor,
+    root: ContainerVisual,
+
     tile_size: Vector2,
 }
 
 impl Grid {
-    pub fn new(container_visual: &ContainerVisual, tile_size: Vector2) -> windows::Result<Self> {
+    pub fn new(compositor: &Compositor, tile_size: Vector2) -> windows::Result<Self> {
+        let compositor = compositor.clone();
+        let root = compositor.CreateContainerVisual()?;
+
         Ok(Self {
-            container_visual: container_visual.clone(),
-            compositor: container_visual.Compositor()?.clone(),
-            tile_size: tile_size,
+            compositor: compositor,
+            root: root,
+            tile_size: tile_size.clone(),
         })
     }
 
     pub fn draw(&self) -> windows::Result<()> {
+        let children = self.root.Children()?;
         let color_brush = self.compositor.CreateColorBrushWithColor(Colors::Red()?)?;
+
+        self.root.SetSize(
+            (&self.tile_size + Vector2::new(2.5, 2.5)) * Vector2::new(16.0 as f32, 16.0 as f32),
+        )?;
 
         for x in 0..8 {
             for y in 0..8 {
@@ -32,7 +41,7 @@ impl Grid {
                     Vector3::new(1.25, 1.25, 0.0)
                         + (Vector3::new(27.5, 27.5, 27.5) * Vector3::new(x as f32, y as f32, 0.0)),
                 )?;
-                self.container_visual.Children()?.InsertAtTop(&visual)?;
+                children.InsertAtTop(&visual)?;
             }
         }
 

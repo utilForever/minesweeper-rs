@@ -47,6 +47,8 @@ impl Minesweeper {
         }
 
         self.generate_mines();
+
+        self.gui.reset();
     }
 
     fn generate_mines(&mut self) {

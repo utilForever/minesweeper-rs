@@ -33,17 +33,25 @@ impl GUI {
         game_board_visual.SetAnchorPoint(Vector2::new(0.5, 0.5))?;
         root.Children()?.InsertAtTop(game_board_visual)?;
 
-        let result = Self {
+        let mut result = Self {
             compositor: compositor,
             window_size: window_size.clone(),
             game_board: game_board,
         };
 
+        result.reset()?;
+
         Ok(result)
     }
 
-    pub fn draw_grid(&self) -> windows::Result<()> {
+    pub fn reset(&mut self) -> windows::Result<()> {
         self.game_board.draw()?;
+
+        let color_brush = self.compositor.CreateColorBrushWithColor(Colors::Blue()?)?;
+        
+        for tile in self.game_board.tiles_iter() {
+            tile.SetBrush(&color_brush)?;
+        }
 
         Ok(())
     }

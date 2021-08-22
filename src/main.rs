@@ -80,7 +80,8 @@ fn run() -> windows::Result<()> {
     let game = Minesweeper::new(
         game_board_size.Width as u32,
         game_board_size.Height as u32,
-        99, &gui,
+        99,
+        &gui,
     );
 
     event_loop.run(move |event, _, control_flow| {

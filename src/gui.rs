@@ -48,7 +48,7 @@ impl GUI {
         self.game_board.draw()?;
 
         let color_brush = self.compositor.CreateColorBrushWithColor(Colors::Blue()?)?;
-        
+
         for tile in self.game_board.tiles_iter() {
             tile.SetBrush(&color_brush)?;
         }

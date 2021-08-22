@@ -1,6 +1,8 @@
 mod grid;
+mod gui;
 mod minesweeper;
 
+use gui::GUI;
 use minesweeper::Minesweeper;
 
 use winit::{
@@ -28,7 +30,6 @@ use windows::Interface;
 fn create_dispatcher() -> DispatcherQueueController {
     // We need a DispatcherQueue on our thread to properly create a Compositor. Note that since
     // we aren't pumping messages, the Compositor won't commit. This is fine for the test for now.
-
     let options = DispatcherQueueOptions {
         dwSize: std::mem::size_of::<DispatcherQueueOptions>() as u32,
         threadType: DQTYPE_THREAD_CURRENT,
@@ -55,7 +56,6 @@ fn run() -> windows::Result<()> {
     };
 
     let compositor_desktop: ICompositorDesktopInterop = compositor.cast()?;
-
     let target = unsafe {
         compositor_desktop.CreateDesktopWindowTarget(HWND(window_handle as isize), false)?
     };
@@ -65,8 +65,14 @@ fn run() -> windows::Result<()> {
     container_visual.SetRelativeSizeAdjustment(Vector2 { X: 1.0, Y: 1.0 })?;
     target.SetRoot(&container_visual)?;
 
-    // Create grid.
-    let window_size = window.inner_size();
+    // Create GUI.
+    let window_size = Vector2::new(
+        window.inner_size().width as f32,
+        window.inner_size().height as f32,
+    );
+    let gui = GUI::new(&container_visual, &window_size)?;
+
+    // Create Minesweeper game.
     let game_board_size = SizeInt32 {
         Width: 30,
         Height: 16,
@@ -75,8 +81,8 @@ fn run() -> windows::Result<()> {
         game_board_size.Width as u32,
         game_board_size.Height as u32,
         99,
+        &gui,
     );
-    game.show_with_mine_count();
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;

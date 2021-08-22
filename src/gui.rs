@@ -34,9 +34,9 @@ impl GUI {
         root.Children()?.InsertAtTop(game_board_visual)?;
 
         let mut result = Self {
-            compositor: compositor,
+            compositor,
             window_size: window_size.clone(),
-            game_board: game_board,
+            game_board,
         };
 
         result.reset()?;

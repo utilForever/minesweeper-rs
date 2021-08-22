@@ -24,8 +24,8 @@ impl Grid {
         let root = compositor.CreateContainerVisual()?;
 
         Ok(Self {
-            compositor: compositor,
-            root: root,
+            compositor,
+            root,
             tiles: Vec::new(),
 
             tile_size: tile_size.clone(),

@@ -26,11 +26,11 @@ impl Minesweeper {
         let board_size = (width * height) as usize;
 
         let mut result = Self {
-            width: width,
-            height: height,
+            width,
+            height,
 
             mines: vec![false; board_size],
-            num_mines: num_mines,
+            num_mines,
             mine_states: vec![MineState::Empty; board_size],
 
             gui: gui.clone(),
